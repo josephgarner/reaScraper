@@ -3,13 +3,13 @@ from pymongo import MongoClient
 def get_database():
  
    # Provide the mongodb atlas url to connect python to mongodb using pymongo
-   CONNECTION_STRING = "mongodb://192.168.1.2/rea_Scraper"
+   CONNECTION_STRING = "mongodb://192.168.1.2/rea_Scraper_test"
  
    # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
    client = MongoClient(CONNECTION_STRING)
  
    # Create the database for our example (we will use the same database throughout the tutorial)
-   return client['rea_scraper']
+   return client['rea_Scraper_test']
   
 # This is added so that many files can reuse the function get_database()
 if __name__ == "__main__":   

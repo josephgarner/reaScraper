@@ -9,8 +9,8 @@ from pymongo_get_database import get_database
 api = RealestateComAu()
 
 dbname = get_database()
-buyListingsCollection = dbname["buy_listings"]
-soldListingsCollection = dbname["sold_listings"]
+buyListingsCollection = dbname["buy_listings_test"]
+soldListingsCollection = dbname["sold_listings_test"]
 
 
 def saveListings(listings, collection):
@@ -30,25 +30,26 @@ def saveListings(listings, collection):
 		dictListing['scraped_date'] = datetime.now()
 
 		collection.insert_one(dictListing)
+		collection.replace_one({"id": dictListing["id"]}, dictListing, True)
 
 def main():
 
 	print('Pulling down BUY listings')
 
 	buyListings = api.search(
-	    locations=["place"], # search term
+	    locations=["suburbs"], # search term
 	    channel="buy", # listing type
 	    sort_type="new-desc", # sort method
-	    limit=200 # number of articles to collect
+	    limit=100 # number of articles to collect
 	)
 
 	print('Pulling down SOLD listings')
 
 	soldListings = api.search(
-	    locations=["place"], # search term
+	    locations=["suburbs"], # search term
 	    channel="sold", # listing type
 	    sort_type="new-desc", # sort method
-	    limit=200 # number of articles to collect
+	    limit=100 # number of articles to collect
 	)
 
 	print('Saving scrape')
