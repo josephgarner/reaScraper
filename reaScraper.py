@@ -29,8 +29,32 @@ def saveListings(listings, collection):
 
 		dictListing['scraped_date'] = datetime.now()
 
-		collection.insert_one(dictListing)
-		collection.replace_one({"id": dictListing["id"]}, dictListing, True)
+		newdata = [{ "$set": {
+    	"badge" : dictListing['badge'],
+    	"url" : dictListing['url'],
+    	"suburb" : dictListing['suburb'],
+    	"state" : dictListing['state'],
+    	"postcode" : dictListing['postcode'],
+    	"short_address" : dictListing['short_address'],
+    	"full_address" : dictListing['full_address'],
+    	"property_type" : dictListing['property_type'],
+    	"price" : dictListing['price'],
+    	"price_text" : dictListing['price_text'],
+    	"bedrooms" : dictListing['bedrooms'],
+    	"bathrooms" : dictListing['bathrooms'],
+    	"parking_spaces" : dictListing['parking_spaces'],
+    	"building_size" : dictListing['building_size'],
+    	"building_size_unit" : dictListing['building_size_unit'],
+    	"land_size" : dictListing['land_size'],
+    	"land_size_unit" : dictListing['land_size_unit'],
+    	"auction_date" : dictListing['auction_date'],
+    	"available_date" : dictListing['available_date'],
+    	"sold_date" : dictListing['sold_date'],
+    	"starred" : { "$eq": [ "$starred", True ] },
+    	"scraped_date" : dictListing['scraped_date']
+		} }]
+
+		collection.update_one({"id": dictListing["id"]}, newdata, True)
 
 def main():
 
