@@ -22,7 +22,6 @@ def saveListings(listings, collection):
 		dictListing.pop('listers', None)
 		dictListing.pop('inspections', None)
 		dictListing.pop('description', None)
-		dictListing.pop('shot_address', None)
 		dictListing.pop('listing_company_id', None)
 		dictListing.pop('listing_company_name', None)
 		dictListing.pop('listing_company_phone', None)
@@ -39,7 +38,7 @@ def saveListings(listings, collection):
     	"full_address" : dictListing['full_address'],
     	"property_type" : dictListing['property_type'],
     	"price" : dictListing['price'],
-    	"price_text" : dictListing['price_text'],
+    	"price_text" : dictListing['price_text'].replace("$",""),
     	"bedrooms" : dictListing['bedrooms'],
     	"bathrooms" : dictListing['bathrooms'],
     	"parking_spaces" : dictListing['parking_spaces'],
@@ -54,6 +53,11 @@ def saveListings(listings, collection):
     	"scraped_date" : dictListing['scraped_date']
 		} }]
 
+		print(dictListing['id'])
+		print(dictListing['price_text'])
+
+		print(newdata)
+
 		collection.update_one({"id": dictListing["id"]}, newdata, True)
 
 def main():
@@ -61,25 +65,25 @@ def main():
 	print('Pulling down BUY listings')
 
 	buyListings = api.search(
-	    locations=["suburbs"], # search term
+	    locations=["Altona Meadows"], # search term
 	    channel="buy", # listing type
 	    sort_type="new-desc", # sort method
-	    limit=100 # number of articles to collect
+	    limit=10 # number of articles to collect
 	)
 
 	print('Pulling down SOLD listings')
 
-	soldListings = api.search(
-	    locations=["suburbs"], # search term
-	    channel="sold", # listing type
-	    sort_type="new-desc", # sort method
-	    limit=100 # number of articles to collect
-	)
+	# soldListings = api.search(
+	#     locations=["suburbs"], # search term
+	#     channel="sold", # listing type
+	#     sort_type="new-desc", # sort method
+	#     limit=100 # number of articles to collect
+	# )
 
 	print('Saving scrape')
 
 	saveListings(buyListings, buyListingsCollection)
-	saveListings(soldListings, soldListingsCollection)
+	# saveListings(soldListings, soldListingsCollection)
 
 	print('Scrape complete')
 
